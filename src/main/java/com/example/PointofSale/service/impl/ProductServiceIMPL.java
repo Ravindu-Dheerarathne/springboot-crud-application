@@ -1,9 +1,12 @@
 package com.example.PointofSale.service.impl;
 
 import com.example.PointofSale.dto.ProductDTO;
+import com.example.PointofSale.dto.queryInterface.TrackQuantitiesInterface;
+import com.example.PointofSale.dto.responsedto.QuantityResponseDTO;
 import com.example.PointofSale.entity.Product;
 import com.example.PointofSale.repository.ProductRepo;
 import com.example.PointofSale.service.ProductService;
+import com.example.PointofSale.util.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +16,10 @@ import java.util.List;
 @Service
 public class ProductServiceIMPL implements ProductService {
 
-    // Conversions between the entity class and the dto class is done though the constructors.
+    // Conversions between the entity class and the dto class is done though the constructors in some methods.
+
+    @Autowired
+    private ProductMapper productMapper;
 
     @Autowired
     private ProductRepo productRepo;
@@ -90,6 +96,15 @@ public class ProductServiceIMPL implements ProductService {
             return productId + " Deleted";
         }
         else throw new RuntimeException("Not Found");
+    }
+
+    @Override
+    public List<QuantityResponseDTO> trackQuantities(String productName) {
+        List<TrackQuantitiesInterface> trackQuantitiesInterfaces = productRepo.trackQuantities(productName);
+        List<QuantityResponseDTO> quantityResponseDTOList = productMapper.entityListToDTO(trackQuantitiesInterfaces);
+        if(!quantityResponseDTOList.isEmpty()){
+            return quantityResponseDTOList;
+        } else throw new RuntimeException("No Products with the Name");
     }
 
 }

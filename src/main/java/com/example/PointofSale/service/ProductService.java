@@ -1,6 +1,7 @@
 package com.example.PointofSale.service;
 
 import com.example.PointofSale.dto.ProductDTO;
+import com.example.PointofSale.dto.responsedto.QuantityResponseDTO;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface ProductService {
     ProductDTO getProductById(int productId);
 
     String deleteProductById(int productId);
+
+    List<QuantityResponseDTO> trackQuantities(String productName);
 }

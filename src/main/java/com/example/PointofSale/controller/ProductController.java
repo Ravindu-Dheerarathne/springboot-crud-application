@@ -1,6 +1,7 @@
 package com.example.PointofSale.controller;
 
 import com.example.PointofSale.dto.ProductDTO;
+import com.example.PointofSale.dto.responsedto.QuantityResponseDTO;
 import com.example.PointofSale.service.ProductService;
 import com.example.PointofSale.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,18 @@ public class ProductController {
         String response = productService.deleteProductById(productId);
         ResponseEntity<StandardResponse> responseEntity = new ResponseEntity<StandardResponse>(
                 new StandardResponse(200, "Successfully Deleted", response) , HttpStatus.OK
+        );
+        return responseEntity;
+    }
+
+    @GetMapping(
+            value = "/track-quantities",
+            params = "productName"
+    )
+    public ResponseEntity<StandardResponse> trackQuantities(String productName){
+        List<QuantityResponseDTO> response = productService.trackQuantities(productName);
+        ResponseEntity<StandardResponse> responseEntity = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Successfully Retrieved Data", response) , HttpStatus.OK
         );
         return responseEntity;
     }
