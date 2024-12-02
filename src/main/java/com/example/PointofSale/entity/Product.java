@@ -2,12 +2,14 @@ package com.example.PointofSale.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "product")
 public class Product {
     @Id
     @Column(name = "product_id", length = 50)
-    @GeneratedValue  (strategy = GenerationType.AUTO)
+    @GeneratedValue  (strategy = GenerationType.IDENTITY)
     private int productId;
 
     @Column(name = "name", nullable = false)
@@ -24,6 +26,9 @@ public class Product {
 
     @Column(name = "category")
     private String category;
+
+    @OneToMany(mappedBy="product")
+    private Set<SaleItem> saleItems;
 
     // Normal getters, setters and constructors have been used instead spring boot annotation.
     public int getProductId() {
