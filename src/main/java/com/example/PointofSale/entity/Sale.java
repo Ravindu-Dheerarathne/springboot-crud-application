@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -24,8 +24,8 @@ public class Sale {
     private int saleId;
 
     @Column(name = "sale_date" , nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss,SSS")
-    private Date saleDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate saleDate;
 
     @Column(name = "total_amount" , nullable = false)
     private Double totalAmount;
@@ -37,7 +37,7 @@ public class Sale {
     @OneToMany(mappedBy="sale")
     private Set<SaleItem> saleItems;
 
-    public Sale(Date saleDate, Double totalAmount, Payment_Status paymentStatus) {
+    public Sale(LocalDate saleDate, Double totalAmount, Payment_Status paymentStatus) {
         this.saleDate = saleDate;
         this.totalAmount = totalAmount;
         this.paymentStatus = paymentStatus;

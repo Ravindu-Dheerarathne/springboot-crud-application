@@ -27,4 +27,10 @@ public interface ProductRepo extends JpaRepository <Product,Integer> {
     @Transactional
     @Query(value = " update product set stock_qty= ?1 where product_id = ?2 " , nativeQuery = true)
     void setProductQtyByProductId(int productQuantity, int productId);
+
+    @Query(value = "select pr.name from product pr where pr.product_id = ?1 " , nativeQuery = true)
+    String getProductNameByProductId(int productId);
+
+    @Query(value = "select `price(usd)` from product where product_id = ?1 " , nativeQuery = true)
+    double getPrice(int productId);
 }

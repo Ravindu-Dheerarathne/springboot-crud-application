@@ -20,8 +20,6 @@ public class SaleController {
 
     @PostMapping(path="/create-sale")
     public ResponseEntity<StandardResponse> createSale(@RequestBody SaleDTO saleDTO){
-//        String response = saleService.createSale(saleDTO);
-//        System.out.println(saleDTO);
         SaleDTO saleDTO1 = saleService.createSale(saleDTO);
         ResponseEntity<StandardResponse> responseEntity = new ResponseEntity<StandardResponse>(
                 new StandardResponse(201,"Sale Successfully Completed",saleDTO1) , HttpStatus.CREATED
