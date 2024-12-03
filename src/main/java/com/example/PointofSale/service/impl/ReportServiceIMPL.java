@@ -33,21 +33,26 @@ public class ReportServiceIMPL implements ReportService {
             return reportResponseDTO;
 
         } else {
-            boolean ss = productRepo.existsByProductId(productId);
-            if (!ss) {
-                throw new NotFoundException("Product Not Found");
+            boolean existsProduct = productRepo.existsByProductId(productId);
+            if (!existsProduct) {
+                throw new NotFoundException("Product Not Found in Product Table");
             } else {
 
-                int totalQtyBetweenDatesByProductId = saleRepo.getTotalSalesByProductId(startDate, endDate, productId);
-                double totalAmountByProductId = totalQtyBetweenDatesByProductId * productRepo.getPrice(productId);
+                Long existsProductInSaleTbl = saleRepo.productIdExistsInSaleTbl(startDate,endDate,productId);
+                boolean boolExistsProductInSaleTbl = existsProductInSaleTbl != 0 ;
 
-                ReportResponseDTO reportResponseDTO = new ReportResponseDTO();
-                reportResponseDTO.setStartdate(startDate);
-                reportResponseDTO.setEndDate(endDate);
-                reportResponseDTO.setTotalAmount(totalAmountByProductId);
-                reportResponseDTO.setProductName(productRepo.getProductNameByProductId(productId));
-                return reportResponseDTO;
-
+                if(!boolExistsProductInSaleTbl){
+                    throw new NotFoundException("Product Not Found in Sale Item Table Within Date Range");
+                } else {
+                    int totalQtyBetweenDatesByProductId = saleRepo.getTotalSalesByProductId(startDate, endDate, productId);
+                    double totalAmountByProductId = totalQtyBetweenDatesByProductId * productRepo.getPrice(productId);
+                    ReportResponseDTO reportResponseDTO = new ReportResponseDTO();
+                    reportResponseDTO.setStartdate(startDate);
+                    reportResponseDTO.setEndDate(endDate);
+                    reportResponseDTO.setTotalAmount(totalAmountByProductId);
+                    reportResponseDTO.setProductName(productRepo.getProductNameByProductId(productId));
+                    return reportResponseDTO;
+                }
             }
         }
     }
