@@ -3,6 +3,7 @@ package com.example.PointofSale.service.impl;
 import com.example.PointofSale.dto.SaleDTO;
 import com.example.PointofSale.entity.Sale;
 import com.example.PointofSale.entity.SaleItem;
+import com.example.PointofSale.exception.NotFoundException;
 import com.example.PointofSale.repository.ProductRepo;
 import com.example.PointofSale.repository.SaleItemRepo;
 import com.example.PointofSale.repository.SaleRepo;
@@ -36,10 +37,10 @@ public class SaleServiceIMPL implements SaleService {
     @Transactional
     public SaleDTO createSale(SaleDTO saleDTO) {
         for (int i=0;i<saleDTO.getSaleItemDTOS().size();i++){
-            boolean ss = productRepo.existsByProductId(saleDTO.getSaleItemDTOS().get(i).getProductId());
+            boolean existsProduct = productRepo.existsByProductId(saleDTO.getSaleItemDTOS().get(i).getProductId());
             int productQty = productRepo.getProductQtyByProductId(saleDTO.getSaleItemDTOS().get(i).getProductId());
-            if(productQty<1 || !ss){
-                throw new RuntimeException(saleDTO.getSaleItemDTOS().get(i).getProductId() + " is out of stock.");
+            if(productQty<1 || !existsProduct){
+                throw new NotFoundException(saleDTO.getSaleItemDTOS().get(i).getProductId() + " is out of stock.");
             }
         }
 

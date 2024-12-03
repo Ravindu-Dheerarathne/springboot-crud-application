@@ -1,6 +1,7 @@
 package com.example.PointofSale.service.impl;
 
 import com.example.PointofSale.dto.responsedto.ReportResponseDTO;
+import com.example.PointofSale.exception.NotFoundException;
 import com.example.PointofSale.repository.ProductRepo;
 import com.example.PointofSale.repository.SaleRepo;
 import com.example.PointofSale.service.ReportService;
@@ -34,7 +35,7 @@ public class ReportServiceIMPL implements ReportService {
         } else {
             boolean ss = productRepo.existsByProductId(productId);
             if (!ss) {
-                throw new RuntimeException(productId + " is not found.");
+                throw new NotFoundException("Product Not Found");
             } else {
 
                 int totalQtyBetweenDatesByProductId = saleRepo.getTotalSalesByProductId(startDate, endDate, productId);

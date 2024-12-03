@@ -4,6 +4,7 @@ import com.example.PointofSale.dto.ProductDTO;
 import com.example.PointofSale.dto.queryInterface.TrackQuantitiesInterface;
 import com.example.PointofSale.dto.responsedto.QuantityResponseDTO;
 import com.example.PointofSale.entity.Product;
+import com.example.PointofSale.exception.NotFoundException;
 import com.example.PointofSale.repository.ProductRepo;
 import com.example.PointofSale.service.ProductService;
 import com.example.PointofSale.util.mapper.ProductMapper;
@@ -86,7 +87,7 @@ public class ProductServiceIMPL implements ProductService {
             );
             return productDTO;
         }
-        else throw new RuntimeException("Not found");
+        else throw new NotFoundException("Not Found");
     }
 
     @Override
@@ -95,7 +96,7 @@ public class ProductServiceIMPL implements ProductService {
             productRepo.deleteById(productId);
             return productId + " Deleted";
         }
-        else throw new RuntimeException("Not Found");
+        else throw new NotFoundException("Not Found");
     }
 
     @Override
@@ -104,7 +105,7 @@ public class ProductServiceIMPL implements ProductService {
         List<QuantityResponseDTO> quantityResponseDTOList = productMapper.entityListToDTO(trackQuantitiesInterfaces);
         if(!quantityResponseDTOList.isEmpty()){
             return quantityResponseDTOList;
-        } else throw new RuntimeException("No Products with the Name");
+        } else throw new NotFoundException("No Products with the Name");
     }
 
 }
