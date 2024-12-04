@@ -1,6 +1,7 @@
 package com.example.PointofSale.controller;
 
 import com.example.PointofSale.dto.ProductDTO;
+import com.example.PointofSale.dto.responsedto.PaginatedProductResponseDTO;
 import com.example.PointofSale.dto.responsedto.QuantityResponseDTO;
 import com.example.PointofSale.service.ProductService;
 import com.example.PointofSale.util.StandardResponse;
@@ -42,6 +43,18 @@ public class ProductController {
         List<ProductDTO> list = productService.getAllProducts();
         ResponseEntity<StandardResponse> responseEntity = new ResponseEntity<StandardResponse>(
                 new StandardResponse(200, "Successfully Retrieved Data", list) , HttpStatus.OK
+        );
+        return responseEntity;
+    }
+
+    @GetMapping("/get-products-by-category")
+    public ResponseEntity<StandardResponse> getProductsByCategory(
+            @RequestParam(value = "category") String category,
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") int size) {
+        PaginatedProductResponseDTO paginatedProductResponseDTO = productService.getProductsByCategory(category, page,size);
+        ResponseEntity<StandardResponse> responseEntity = new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Successfully Retrieved Data", paginatedProductResponseDTO), HttpStatus.OK
         );
         return responseEntity;
     }

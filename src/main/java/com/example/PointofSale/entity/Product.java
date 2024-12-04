@@ -21,7 +21,7 @@ public class Product {
     @Column(name = "price(USD)", nullable = false)
     private double price;
 
-    @Column(name = "stock_qty")
+    @Column(name = "stockqty")
     private int stock_qty;
 
     @Column(name = "category")

@@ -2,6 +2,8 @@ package com.example.PointofSale.repository;
 
 import com.example.PointofSale.dto.queryInterface.TrackQuantitiesInterface;
 import com.example.PointofSale.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,4 +35,10 @@ public interface ProductRepo extends JpaRepository <Product,Integer> {
 
     @Query(value = "select `price(usd)` from product where product_id = ?1 " , nativeQuery = true)
     double getPrice(int productId);
+
+
+    Page<Product> findAllByCategoryEquals(String category , Pageable pageable);
+
+    int countAllByCategoryEquals(String category);
 }
+

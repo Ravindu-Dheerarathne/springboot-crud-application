@@ -2,6 +2,7 @@ package com.example.PointofSale.service.impl;
 
 import com.example.PointofSale.dto.ProductDTO;
 import com.example.PointofSale.dto.queryInterface.TrackQuantitiesInterface;
+import com.example.PointofSale.dto.responsedto.PaginatedProductResponseDTO;
 import com.example.PointofSale.dto.responsedto.QuantityResponseDTO;
 import com.example.PointofSale.entity.Product;
 import com.example.PointofSale.exception.NotFoundException;
@@ -9,6 +10,8 @@ import com.example.PointofSale.repository.ProductRepo;
 import com.example.PointofSale.service.ProductService;
 import com.example.PointofSale.util.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -106,6 +109,22 @@ public class ProductServiceIMPL implements ProductService {
         if(!quantityResponseDTOList.isEmpty()){
             return quantityResponseDTOList;
         } else throw new NotFoundException("No Products with the Name");
+    }
+
+    @Override
+    public PaginatedProductResponseDTO getProductsByCategory(String category, int page, int size) {
+
+        Page<Product> productList = productRepo.findAllByCategoryEquals(category, PageRequest.of(page, size));
+        int count = productRepo.countAllByCategoryEquals(category);
+        if(productList.getSize()<1){
+            throw new NotFoundException("No Data");
+        } else {
+            PaginatedProductResponseDTO paginatedProductResponseDTO = new PaginatedProductResponseDTO(
+                    productMapper.listToPage(productList), count
+            );
+            return paginatedProductResponseDTO;
+        }
+
     }
 
 }
